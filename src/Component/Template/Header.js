@@ -99,8 +99,9 @@ export default function Header(props) {
     var data = {
       idRequester: localStorage.getItem('idUserInfor')
     }
-    axios.post('http://localhost:4000/get_all_friend_request', data)
+    axios.post('https://api-chat-hust.herokuapp.com/get_all_friend_request', data)
     .then(result => {
+      console.log(result.data)
       setListRequest(result.data);
     })
     .catch(err => {
@@ -118,7 +119,7 @@ export default function Header(props) {
       listRequest.map(request => (
           <MenuItem key={request._id}>
             <ListItemIcon>
-              <Avatar alt="Hung Con" src="./images/per-avatar.jpg" />
+              <Avatar alt={request.recipient.firstName + " " + request.recipient.lastName} src={request.recipient.avatarURL} />
             </ListItemIcon>
             <Typography className={classes.name}>{request.recipient.firstName + " " + request.recipient.lastName}</Typography>
             {
@@ -147,7 +148,7 @@ export default function Header(props) {
       idCancle: e.currentTarget.value,
       userId: localStorage.getItem('idUserInfor')
     };
-    axios.post('http://localhost:4000/cancle_request', data)
+    axios.post('https://api-chat-hust.herokuapp.com/cancle_request', data)
     .then(reuslt => {
       setStatus(!status);
     })
@@ -161,7 +162,7 @@ export default function Header(props) {
       userId: localStorage.getItem('idUserInfor'),
       friendId: e.currentTarget.value
     };
-    axios.post('http://localhost:4000/accept_friend', data)
+    axios.post('https://api-chat-hust.herokuapp.com/accept_friend', data)
     .then(result => {
       setStatus(!status);
     })
@@ -178,7 +179,7 @@ export default function Header(props) {
     var data = {
       userInforId: localStorage.getItem('idUserInfor')
     }
-    axios.post('http://localhost:4000/get_user_infor', data)
+    axios.post('https://api-chat-hust.herokuapp.com/get_user_infor', data)
     .then(result => {
       setUserInfor(result.data);
     })

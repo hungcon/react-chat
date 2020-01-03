@@ -57,7 +57,7 @@ export default function PersonalInformation(props) {
     const onSubmit = values => {
         values.userName = localStorage.getItem('userName');
         values.avatarURL = avatarPath;
-        axios.post('http://localhost:4000/update_user_information', values)
+        axios.post('https://api-chat-hust.herokuapp.com/update_user_information', values)
         .then(result =>{
             if (result.status === 201){
                 if(result.data.message === "OK"){
@@ -86,7 +86,7 @@ export default function PersonalInformation(props) {
         var data = {
             userInforId: localStorage.getItem('idUserInfor')
         }
-        axios.post('http://localhost:4000/get_user_infor', data)
+        axios.post('https://api-chat-hust.herokuapp.com/get_user_infor', data)
         .then(result => {
             if (result.status === 201){
                setUserInfor(result.data);

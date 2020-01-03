@@ -86,12 +86,13 @@ export default function Home(props) {
     if(searchValue === ""){
       setSearching(false);
     } else {
-      let data = {
+      var data = {
         searchValue: searchValue,
         userName: localStorage.getItem('userName')
       }
-      axios.post('http://localhost:4000/find_friend', data)
+      axios.post('http://api-chat-hust.herokuapp.com/find_friend', data)
       .then(result => {
+        console.log(result)
         if (result.status === 201){
           setSearchResult(result.data);
           setSearching(true);
@@ -103,6 +104,7 @@ export default function Home(props) {
         }
       })
       .catch(err => {
+        console.log(err)
         setSnackbar({
           message: 'Internal server error',
           open: true
@@ -126,7 +128,7 @@ export default function Home(props) {
     var data = {
       userId: localStorage.getItem('idUserInfor')
     }
-    axios.post('http://localhost:4000/get_all_friend', data)
+    axios.post('https://api-chat-hust.herokuapp.com/get_all_friend', data)
     .then(result => {
       if (result.status === 201){
         setListFriend(result.data);
@@ -151,7 +153,7 @@ export default function Home(props) {
       requesterId: localStorage.getItem('idUserInfor'),
       recipientId: e.currentTarget.value
     }
-    axios.post('http://localhost:4000/request_friend', data )
+    axios.post('https://api-chat-hust.herokuapp.com/request_friend', data )
     .then(result => {
       if (result.status === 201){
         if(result.data.message === "OK"){
@@ -177,7 +179,7 @@ export default function Home(props) {
       userId: localStorage.getItem('idUserInfor'),
       unfriendId: e.currentTarget.value
     }
-    axios.post('http://localhost:4000/unfriend', data)
+    axios.post('https://api-chat-hust.herokuapp.com/unfriend', data)
     .then(result => {
       if (result.status === 201){
         if(result.data.message === "OK"){
@@ -280,7 +282,7 @@ export default function Home(props) {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
+                    image={user.avatarURL}
                     title={user.lastName}
                   />
                   <CardContent className={classes.cardContent}>

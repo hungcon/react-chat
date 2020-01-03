@@ -88,6 +88,7 @@ export default function MessageHistory(props) {
     const [listFriend, setListFriend] = useState([]);
     const [listMessage, setListMessage] = useState([]);
     const [chosenFriend, setChosenFriend] = useState();
+    const [avatarURL, setAvatarURL] = useState();
     const [snackbar, setSnackbar] = useState({});
 
     const closeSnackbar = () => {
@@ -119,7 +120,7 @@ export default function MessageHistory(props) {
             receiver: chosenFriend,
             content: sendMessage
         };
-        axios.post('http://localhost:4000/store_message', data)
+        axios.post('https://api-chat-hust.herokuapp.com/store_message', data)
         .then(result => {
             console.log(result);
             setStatus(!status);
@@ -134,11 +135,12 @@ export default function MessageHistory(props) {
         var data = {
           userId: localStorage.getItem('idUserInfor')
         }
-        axios.post('http://localhost:4000/get_all_friend', data)
+        axios.post('https://api-chat-hust.herokuapp.com/get_all_friend', data)
         .then(result => {
           if (result.status === 201){
             for(var i = 0; i < result.data.length; i++){
                 setChosenFriend(result.data[i]._id);
+                setAvatarURL(result.data[i].avatarURL);
                 break;
             }
             setListFriend(result.data);
@@ -163,9 +165,8 @@ export default function MessageHistory(props) {
             chosenFriend: chosenFriend,
             idUserInfor: localStorage.getItem('idUserInfor')
         };
-        axios.post('http://localhost:4000/get_list_message', data)
+        axios.post('https://api-chat-hust.herokuapp.com/get_list_message', data)
         .then(result => {
-            console.log(result)
             if (result.status === 201){
                setListMessage(result.data);
             } else {
@@ -183,6 +184,11 @@ export default function MessageHistory(props) {
         })
     }, [chosenFriend, status]);
 
+    const setData = (chosenFriend, avatarURL) => {
+        setChosenFriend(chosenFriend);
+        setAvatarURL(avatarURL);
+    }
+
     return (
        <React.Fragment>
             <Header history={props.history}></Header>
@@ -197,9 +203,9 @@ export default function MessageHistory(props) {
                     <div className={classes.toolbar} />
                     <List>
                         {listFriend.map(friend => (
-                            <ListItem button key={friend._id} onClick={() => setChosenFriend(friend._id)} className={friend._id === chosenFriend ? classes.chosen : ''}>
+                            <ListItem button key={friend._id} onClick={() => setData(friend._id, friend.avatarURL)} className={friend._id === chosenFriend ? classes.chosen : ''}>
                                 <ListItemIcon>
-                                    <Avatar alt="Hung Con" src="./images/per-avatar.jpg"  />
+                                    <Avatar alt={friend.firstName + " " + friend.lastName} src={friend.avatarURL}  />
                                 </ListItemIcon>
                                 <ListItemText primary={friend.firstName + " " + friend.lastName} />
                             </ListItem>
@@ -215,7 +221,7 @@ export default function MessageHistory(props) {
                                     <Grid item></Grid> 
                                         :
                                         <Grid item>
-                                            <Avatar alt="Hung Con" src="./images/per-avatar.jpg"  />
+                                            <Avatar alt="Hung Con" src={avatarURL}  />
                                         </Grid>
                                     }
                                     <Grid item  className={msg.receiver ===  localStorage.getItem('idUserInfor') ? classes.receivedMsg: classes.sendMsg}>

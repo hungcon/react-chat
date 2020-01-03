@@ -50,7 +50,7 @@ export default function SignUp(props) {
   
   const onSubmit = values => {
     // console.log(values)
-    axios.post('http://localhost:4000/create_account', values)
+    axios.post('https://api-chat-hust.herokuapp.com/create_account', values)
     .then(result => {
       //Lấy thông điệp trả về
       let message = result.data.message;

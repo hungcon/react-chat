@@ -131,7 +131,7 @@ export default function ConfigInformation(props) {
     const finish = () => {
         userInfor.userName = localStorage.getItem('userName');
         userInfor.avatarURL = avatarPath;
-        axios.post('http://localhost:4000/create_user_information',userInfor)
+        axios.post('https://api-chat-hust.herokuapp.com/create_user_information',userInfor)
         .then(result => {
             //Lấy thông điệp trả về
             let message = result.data.message;

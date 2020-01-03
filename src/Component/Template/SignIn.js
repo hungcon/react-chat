@@ -49,7 +49,7 @@ export default function SignIn(props) {
   const [snackbar, setSnackbar] = useState({});
 
   const onSubmit = values => {
-    axios.post('http://localhost:4000/sign-in', values)
+    axios.post('https://api-chat-hust.herokuapp.com/sign-in', values)
     .then(result => {
        //Lấy thông điệp trả về
       let message = result.data.message;
